@@ -12,31 +12,41 @@
     <ol>
       <li>Where should you use constants, and where should you use variables? Can they all be constants?</li>
       <p>
-				[Replace this with you answer]
+				When you know you want the input to be constant, and not change you should put in a constant (const).
+        When you know the input is gonna be changed you should use variables (let).
+        If you are not going to change the input they all can be constants.
+        But mostly one does not want to hard code the code, but make it flexible and have the possibility to make changes easily.
+        Therefore one usually don't use const for every input. 
 			</p>
       <li>How do parentheses affect the arithmetic outcome of an expression?</li>
       <p>
-				[Replace this with you answer]
+				As in math the parantheses will affect the outcome. 
+        The code will read what is inside the parantheses first and calculate what's inside when running.
+        It will return a result where it has calculated what is inside the parantheses first. 
 			</p>
       <li>How do we limit floating-point numbers to a given number of decimals?</li>
       <p>
-				[Replace this with you answer]
+				We have different methods to choose the given number of decimals.
+        One can use for example toFixed(), toPrecision() and Math.round().
+        The first two will give the exact decimals that are written. Math.round will round up or down the number. 
 			</p>
       <li>How can we compare two floating-point values to see if they are equal (is 12.199999 the same as 12.2)?</li>
       <p>
-				[Replace this with you answer]
+				We can use comparison operators to compare the numbers. We can check them if they are equal by using "==".
+        12.199999 is not the same as 12.2 unless you round up the first number. 
 			</p>
       <li>What do comparison operators return, and how can we check if they are FALSE or TRUE?</li>
       <p>
-				[Replace this with you answer]
+				They return either a FALSE or TRUE depending on the statement. 
 			</p>
       <li>How does the Math.random() function work, and what can it be used for?</li>
       <p>
-				[Replace this with you answer]
+				Math.random() wil generate a random number between 0 and 1. This can be used to make different programs for example one can make a "Magic 8 ball" that gives you a random fortune. 
 			</p>
       <li>What is modulus (%), and when do we need this operator in mathematical operations?</li>
       <p>
-				[Replace this with you answer]
+				Modulus tells us what is left when the number is divided. For Example 10%3 the code will return us 1.
+        As said we can use this operator when we need to now what is left when something is divided. 
 			</p>
     </ol>
 		<script type="module" src="./task_2-2.mjs" defer></script>

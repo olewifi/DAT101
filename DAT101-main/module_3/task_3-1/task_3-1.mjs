@@ -71,6 +71,7 @@ printOut("--- Part 7 -----------------------------------------------------------
 /* Part 7: Expand part 6 to exclude if the image size is larger or equal to 6MP, then print out “Image is too large”.*/
 
 let imageSize_1 = Math.floor(Math.random()*8) + 1
+printOut(imageSize_1 + " MP");
 if (imageSize_1 >= 4){
   printOut("Thank you!")
 }else if(imageSize_1 >= 6){
@@ -89,25 +90,57 @@ const noOfMonth = monthList.length;
 const monthName = monthList[Math.floor(Math.random() * noOfMonth)];
 Print if monthName contains “r”: “You must take vitamin D” else “You do not need to take vitamin D”*/
 
-/*
-const monthList =["January", "February", "Mars", "April", "Mai",
-  "Jun", "Juli", "August", "September", "October", "November", "December"];
+const monthList =["January", "February", "March", "April", "May",
+  "June", "July", "August", "September", "October", "November", "December"];
   const noOfMonth = monthList.length;
   const monthName = monthList[Math.floor(Math.random() * noOfMonth)];
-  if (monthName ) */
+  
+  if (monthName.includes("r")){
+      printOut("It is " + monthName + ", you must take vitamin D");
+     }else{
+      printOut("It is " + monthName + ", you do not need to take vitamin D");
+  }
 
-printOut("Replace this with you answer!");
 printOut(newLine);
 
 printOut("--- Part 9 ----------------------------------------------------------------------------------------------");
 /*Expand exercise 8 to print how many days there are in the current month. And do not use date object.*/
-printOut("Replace this with you answer!");
+
+if(monthName == "January" ||
+  monthName == "March" ||
+  monthName == "May" ||
+  monthName == "July" ||
+  monthName == "August" ||
+  monthName == "October" ||
+  monthName == "December"){
+    printOut(monthName + " has 31 days");
+  }else if(
+    monthName == "April" ||
+    monthName == "June" ||
+    monthName == "September" ||
+    monthName == "November" ){
+    printOut(monthName + " has 30 days");
+  }else{
+    printOut(monthName + " has 28 days");
+  }
+  
 printOut(newLine);
 
 /* Task 10*/
 printOut("--- Part 10 ---------------------------------------------------------------------------------------------");
+
 /* Imagine you have an art gallery, but you need to refurbish the premises, so you close the gallery from
 March through May, but in April you have temporary premises in the building next door. Use the month
 constant in exercise 8 to inform the status of your gallery in that month.*/
-printOut("Replace this with you answer!");
+
+// March, May = closed || April == temporary premise //
+
+if(monthName == "March" || monthName == "May"){
+  printOut("It is " + monthName + ", The Gallery is closed");
+  }else if(monthName == "April"){
+  printOut("It is " + monthName + ", The Gallery is closed, but there is a temporary gallery in the building next door.");
+  }else{
+  printOut("It is " + monthName + ", Welcome to The Gallery it is open");
+}
+
 printOut(newLine);

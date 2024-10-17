@@ -3,18 +3,41 @@ import { initPrintOut, printOut, newLine } from "../../common/script/utils.mjs";
 initPrintOut(document.getElementById("txtOut"));
 
 printOut("--- Part 1 ----------------------------------------------------------------------------------------------");
+
 /*Use "for" loops to generate two lines on the HTML page. One should count from 1 to 10, and the other
 should count from 10 to 1. Use only two lines to print the rows.*/
+//for (count_1++;) //
+
 printOut("Replace this with you answer!");
 printOut(newLine);
 
 printOut("--- Part 2 ----------------------------------------------------------------------------------------------");
+
 /*Create a program that can guess a number between 1 and 60. Declare a variable and assign it a value, for
 example, 45. Let the computer "guess" by generating a random number. Use a "while" loop and the
 "random" function. Keep the "while" loop running as long as the "guessed number" is incorrect. Print the
 number once the "while" loop has completed. You do not need to print anything while the "while" loop is in
 progress.*/
-printOut("Replace this with you answer!");
+
+/* let number = Math.floor(Math.random()*60)+1;
+const correctNumber = 19;
+while (number == correctNumber){
+    
+    printOut("You have guessed the number!")
+
+} */
+let StartTime = Date.now
+const answerNumber = 45;
+let guessNumber = 0;
+while(answerNumber !== guessNumber){ //returnerer inntil answernumber er lik guessnumber//
+    guessNumber = Math.floor(Math.random()*60)+1;
+}
+printOut("Guess number = " + guessNumber.toString());
+const endTime = Date.now();
+const timeUsed = Endptime;
+PrinOtut ("An")
+
+
 printOut(newLine);
 
 printOut("--- Part 3 ----------------------------------------------------------------------------------------------");
@@ -74,6 +97,50 @@ printOut("--- Part 7 -----------------------------------------------------------
 ● 3 pairs
 ● 2 of a kind and 4 of a kind (tower)
 ● All the same (Yahtzee)*/
+
+const d1 = Math.ceil(Math.random()*6);
+const d2 = Math.ceil(Math.random()*6);
+const d3 = Math.ceil(Math.random()*6);
+const d4 = Math.ceil(Math.random()*6);
+const d5 = Math.ceil(Math.random()*6);
+const d6 = Math.ceil(Math.random()*6);
+
+let diceThrow;
+diceThrow += d1.toString() + ",";
+diceThrow += d2.toString() + ",";
+diceThrow += d3.toString() + ",";
+diceThrow += d4.toString() + ",";
+diceThrow += d5.toString() + ",";
+diceThrow += d6.toString();
+
+printOut("Dicethrow:" + diceThrow);
+
+
+count1 = (diceThrow.match(/1/g) || "").length;
+count2 = (diceThrow.match(/2/g) || "").length;
+count3 = (diceThrow.match(/3/g) || "").length;
+count4 = (diceThrow.match(/4/g) || "").length;
+count5 = (diceThrow.match(/5/g) || "").length;
+count6 = (diceThrow.match(/6/g) || "").length;
+
+let diceCount = "";
+
+diceCount += count1.toString() + ",";
+diceCount += count1.toString() + ",";
+diceCount += count1.toString() + ",";
+diceCount += count1.toString() + ",";
+diceCount += count1.toString() + ",";
+diceCount += count1.toString();
+printOut("diceCount: " + diceCount);
+
+const equals1 = (diceCount.match(/1/g) || "").length;
+const equals6 = (diceCount.match(/6/g) || "").length;
+printOut("equals1: " + equals1.toString());
+printOut("equals6: " + equals6.toString());
+
+
+printOut("Count1: " + diceoOunt.toString)
+
 
 printOut("Replace this with you answer!");
 printOut(newLine);

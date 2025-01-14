@@ -1,4 +1,5 @@
 "use strict";
+import lib2D from "./lib2D.mjs";
 
 /**
  * @library libSprite
@@ -27,11 +28,11 @@ class TSpriteCanvas {
   const sy = aSpriteInfo.y;
   const sw = aSpriteInfo.width; //sWidth
   const sh = aSpriteInfo.height; //sHeight
-  const dx = 100; //posisjon hvor bildet blir tegnet i bredden (x retning)
-  const dy = 200; //posisjon hvor bildet blir tegnet i høyden (y retning)
-  const dw = sw * 1.5; //dWidth = størrelse/scaling
-  const dh = sh * 1.5; //dHeight = størrelse/scaling
-  this.#ctx.drawImage(this.#img, sx, sy, sw, sh, dx, dy, dw, dh)
+  const dx = aDx; //posisjon hvor bildet blir tegnet i bredden (x retning)
+  const dy = aDy; //posisjon hvor bildet blir tegnet i høyden (y retning)
+  const dw = sw; //dWidth = størrelse/scaling
+  const dh = sh; //dHeight = størrelse/scaling
+  this.#ctx.drawImage(this.#img, sx, sy, sw, sh, dx, dy, dw, dh);
   }
   
   clearCanvas(){
@@ -39,21 +40,70 @@ class TSpriteCanvas {
   }
 } //End of TSpriteCanvas class
 
-//Lag en klasse Tsprite med en konstruktør som tar inn et TSpriteCanvas-objekt og et spriteInfo-objekt.
+//Utvid konstruktøren til å ta inn et punkt for destinasjonen til sprite.
 
 class TSprite {
   #spcvs;
   #spi;
-  constructor (aSpriteCanvas, aSpriteInfo){
+  #pos;
+  #index;
+  #speedIndex;
+
+  constructor (aSpriteCanvas, aSpriteInfo, aPosition){
     this.#spcvs = aSpriteCanvas;
     this.#spi = aSpriteInfo;
+    this.#pos = aPosition.clone(); //Kloner posisjonen så den hvor den er
+    this.#index = 0; //indexen til bildene
+    this.animateSpeed = 0;
+    this.#speedIndex = 0;
   } 
 
-  draw(){
-    this.#spcvs.drawSprite(this.#spi)
+  draw (){
+    if(this.animateSpeed > 0){
+
+      this.#speedIndex += this.animateSpeed / 100;
+
+      if(this.#speedIndex >= 1){
+        this.#index++;
+        this.#speedIndex = 0;
+
+        if (this.#index >= this.#spi.count){
+          this.#index = 0;
+        }
+      }
+    }
+    this.#spcvs.drawSprite(this.#spi, this.#pos.x, this.#pos.y, this.#index, this.animateSpeed);
   }
 
-}//End of TSprite 
+  /*IMplementer en metode for å forflytte sprite til en ny posisjon.*/
+
+  translate(aDx, aDy){
+    this.#pos.x += aDx;
+    this.#pos.x += aDy;
+  }
+
+  get posX(){
+    return this.#pos.x;
+  }
+
+  get posY(){
+    return this.#pos.y;
+  }
+
+  set posX (aX){
+    this.#pos.x = aX;
+  }
+
+  set posY (aY) {
+    this.#pos.y = aY;
+  }
+
+  setPos(aX, aY){
+    this.#pos.x =aX;
+    this.#pos.y =aY;
+  }
+}
+//End of TSprite 
 
 export default {
   /**
@@ -64,6 +114,16 @@ export default {
    * @param {string} aFileName - The file name of the sprite sheet image.
    * @param {function} aLoadedFinal - A callback function to call when sheet is done loading.
    */
-  TSpriteCanvas: TSpriteCanvas
+  TSpriteCanvas: TSpriteCanvas,
 
-}
+  /**
+   * @class TSprite
+   * @description A class that manage sprite animations.
+   * @param {TSpriteCanvas} aSpriteCanvas - The sprite canvas to use
+   * @param {object} ASpriteInfo - The sprite information.
+   * @param {TPosition} aPosition - The position of the sprite.
+   * @function draw - Draws the sprite on the canvas.
+   */
+
+  TSprite : TSprite
+};

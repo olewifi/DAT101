@@ -1,4 +1,5 @@
 "use strict";
+import lib2D from "../../common/libs/lib2D.mjs";
 import libSound from "../../common/libs/libSound.mjs";
 import libSprite from "../../common/libs/libSprite.mjs";
 
@@ -28,9 +29,16 @@ export const SpriteInfoList = {
 };
 
 export const GameProps = {
+  //primitiv
   soundMuted: false,
   dayTime: true,
-  background: null
+
+  speed: 1,
+  fpsHero: 1,
+  //scenisk
+  background: null,
+  ground: null,
+  hero: null,
 };
 
 //--------------- Functions ----------------------------------------------//
@@ -45,9 +53,37 @@ function playSound(aSound) {
 
 function loadGame(){
   console.log("Game ready to load<3");
-  GameProps.background = new libSprite.TSprite(spcvs, SpriteInfoList.background);
+  cvs.width = SpriteInfoList.background.width;
+  cvs.height = SpriteInfoList.background.height;
+
+  let pos = new lib2D.TPosition(0, 0);
+  GameProps.background = new libSprite.TSprite(spcvs, SpriteInfoList.background, pos);
+  pos.y = cvs.height - SpriteInfoList.ground.height;
+  GameProps.ground = new libSprite.TSprite(spcvs, SpriteInfoList.ground, pos);
+  pos.x = 200;
+  pos.y = 250;
+  GameProps.hero = new libSprite.TSprite(spcvs, SpriteInfoList.hero1, pos);
+  GameProps.hero.animateSpeed = 10;
+
+  requestAnimationFrame(drawGame);
+  setInterval (animateGame, GameProps.fpsHero);
 }
 
+function drawGame(){
+  spcvs.clearCanvas(); //rense canvas
+  GameProps.background.draw(); //Tegne bakgrunn
+  GameProps.ground.draw();
+  GameProps.hero.draw();
+
+  requestAnimationFrame(drawGame);
+}
+
+function animateGame(){
+  GameProps.ground.translate(-GameProps.speed, 0);
+  if (GameProps.ground.posX <= -SpriteInfoList.background.width){
+      GameProps.ground.posX = 0;
+  }
+}
 //--------------- Event Handlers -----------------------------------------//
 
 function setSoundOnOff() {

@@ -46,6 +46,9 @@ export const GameProps = {
   obstacles: [],
   baits: [],
   menu: null,
+  score: 0,
+  bestScore: 0,
+  sounds: {countDown: null, food: null, gameOver: null, dead: null, running: null},
 };
 
 //--------------- Functions ----------------------------------------------//
@@ -71,13 +74,13 @@ function loadGame(){
   pos.y = 100;
   GameProps.hero = new THero(spcvs, SpriteInfoList.hero1, pos);
 
-  spawnObstacle();
-  spawnBait();
+  GameProps.menu = new TMenu(spcvs);
+
+  //Load sounds
+  GameProps.sounds.running = new lib2D.so
 
   requestAnimationFrame(drawGame);
   setInterval(animateGame, 10);
-
-  GameProps.menu = new TMenu(spcvs);
 } //End of loadgame
 
 function drawGame(){
@@ -108,7 +111,6 @@ function drawBait(){
 function animateGame(){
   switch(GameProps.status){
     case EGameStatus.playing:
-
       if(GameProps.hero.isDead){
         GameProps.hero.animateSpeed = 0;
         GameProps.hero.update();
@@ -122,11 +124,16 @@ function animateGame(){
       }
       GameProps.hero.update();
       let delObstacleIndex = -1;
-
+      
       for(let i = 0; i < GameProps.obstacles.length; i++){
         const obstacle = GameProps.obstacles[i];
         obstacle.update();
-
+        if(obstacle.right < GameProps.hero.left && !obstacle.hasPassed){
+          //Congrats you have passsed the obstacle
+          GameProps.score += 20;
+          console.log("Score: " + GameProps.score);
+          obstacle.haspassed = true;
+        }
         if(obstacle.posX < -100){
           delObstacleIndex = i;
       }
@@ -149,6 +156,7 @@ function animateGame(){
       }
         if (delBaitIndex >= 0){
           GameProps.baits.splice(delBaitIndex, 1);
+          GameProps.score += 10;
       }
       break;
       case EGameStatus.idle:
@@ -176,6 +184,20 @@ function spawnBait(){
     const sec = Math.ceil(Math.random() *5 ) / 10 + 0.5;
     setTimeout(spawnBait, sec * 1000);
   }
+}
+
+export function startGame() {
+  GameProps.status = EGameStatus.playing;
+  //Helten er død, vi må lage en ny helt!
+  GameProps.hero = new THero(spcvs, SpriteInfoList.hero1, new lib2D.TPosition(100, 100));
+  //Vi må slette alle hindringer og baits
+  GameProps.obstacles = [];
+  GameProps.baits = [];
+  GameProps.menu.reset();
+  GameProps.score = 0;
+  spawnObstacle();
+  spawnBait();
+
 }
 
 //--------------- Event Handlers -----------------------------------------//

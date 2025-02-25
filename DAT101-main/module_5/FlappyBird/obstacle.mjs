@@ -7,7 +7,6 @@ class TObstacle{
     #upperObstacle;
     #lowerObstacle;
     #spi;
-
     constructor (aSpriteCanvas, aSpriteInfo){
         this.#spi = aSpriteInfo;
         const minTop = -320 + 25;
@@ -23,6 +22,7 @@ class TObstacle{
         pos.y = top;
         this.#lowerObstacle = new libSprite.TSprite(aSpriteCanvas, aSpriteInfo, pos);
         this.#lowerObstacle.index = 2;
+        this.hasPassed = false;
     }
 
     draw(){
@@ -42,6 +42,14 @@ class TObstacle{
             GameProps.hero.isDead = true;
             console.log("Game Over...");
         }
+    }
+
+    get right(){
+        return this.#upperObstacle.right;
+    }
+
+    get left(){
+        return this.#upperObstacle.left;
     }
 
     get posX(){

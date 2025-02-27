@@ -5,8 +5,11 @@
 //--------------------------------------------------------------------------------------------------------------------
 import lib2D from "../../common/libs/lib2d_v2.mjs";
 import libSprite from "../../common/libs/libSprite_v2.mjs";
+<<<<<<< HEAD
 import { TColourPicker } from "./ColorPicker.mjs";
 import MastermindBoard from "./MastermindBoard.mjs";
+=======
+>>>>>>> 24b694e9d1ac4b3dab9f53d4cbafb3f33867428f
 
 //--------------------------------------------------------------------------------------------------------------------
 //------ Variables, Constants and Objects
@@ -28,6 +31,7 @@ const spcvs = new libSprite.TSpriteCanvas(cvs);
 
 //Add all you game objects here
 export const GameProps = {
+<<<<<<< HEAD
   snapTo: {
     positions: MastermindBoard.ColorAnswer.Row1, 
     distance: 20,
@@ -35,6 +39,10 @@ export const GameProps = {
   Board: new libSprite.TSprite(spcvs, SpriteInfoList.Board, new lib2D.TPoint(0,0)),
   ColorPicker: null,
 };
+=======
+ 
+}
+>>>>>>> 24b694e9d1ac4b3dab9f53d4cbafb3f33867428f
 
 //--------------------------------------------------------------------------------------------------------------------
 //------ Functions
@@ -45,6 +53,7 @@ function newGame() {
 
 function drawGame(){
   spcvs.clearCanvas();
+<<<<<<< HEAD
   GameProps.Board.draw();
   GameProps.ColorPicker[0].draw();
 
@@ -54,6 +63,10 @@ function drawGame(){
 
   }
   //Draw all game objects here, remember to think about the draw order (layers in PhotoShop for example!)
+=======
+  //Draw all game objects here, remember to think about the draw order (layers in PhotoShop for example!)
+  
+>>>>>>> 24b694e9d1ac4b3dab9f53d4cbafb3f33867428f
   requestAnimationFrame(drawGame);
 }
 
@@ -66,6 +79,7 @@ function loadGame() {
   //Set canvas with and height to match the sprite sheet
   cvs.width = SpriteInfoList.Board.width;
   cvs.height = SpriteInfoList.Board.height;
+<<<<<<< HEAD
   spcvs.updateBoundsRect();
 
   GameProps.ColorPicker = [
@@ -78,6 +92,8 @@ function loadGame() {
     new TColourPicker (spcvs, SpriteInfoList.ColorPicker, "White", 6),
     new TColourPicker (spcvs, SpriteInfoList.ColorPicker, "Yellow", 7),
   ]
+=======
+>>>>>>> 24b694e9d1ac4b3dab9f53d4cbafb3f33867428f
 
   newGame();
   requestAnimationFrame(drawGame); // Start the animation loop
@@ -89,5 +105,9 @@ function loadGame() {
 //--------------------------------------------------------------------------------------------------------------------
 
 
+<<<<<<< HEAD
 spcvs.loadSpriteSheet("./Media/SpriteSheet.png", loadGame);
 window.addEventListener("resize", () => spcvs.updateBoundsRect());
+=======
+spcvs.loadSpriteSheet("./Media/SpriteSheet.png", loadGame);
+>>>>>>> 24b694e9d1ac4b3dab9f53d4cbafb3f33867428f

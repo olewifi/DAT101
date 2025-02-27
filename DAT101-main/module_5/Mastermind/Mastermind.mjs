@@ -5,6 +5,8 @@
 //--------------------------------------------------------------------------------------------------------------------
 import lib2D from "../../common/libs/lib2d_v2.mjs";
 import libSprite from "../../common/libs/libSprite_v2.mjs";
+import { TColourPicker } from "./ColorPicker.mjs";
+import MastermindBoard from "./MastermindBoard.mjs";
 
 //--------------------------------------------------------------------------------------------------------------------
 //------ Variables, Constants and Objects
@@ -26,8 +28,13 @@ const spcvs = new libSprite.TSpriteCanvas(cvs);
 
 //Add all you game objects here
 export const GameProps = {
- 
-}
+  snapTo: {
+    positions: MastermindBoard.ColorAnswer.Row1, 
+    distance: 20,
+  },
+  Board: new libSprite.TSprite(spcvs, SpriteInfoList.Board, new lib2D.TPoint(0,0)),
+  ColorPicker: null,
+};
 
 //--------------------------------------------------------------------------------------------------------------------
 //------ Functions
@@ -38,8 +45,15 @@ function newGame() {
 
 function drawGame(){
   spcvs.clearCanvas();
+  GameProps.Board.draw();
+  GameProps.ColorPicker[0].draw();
+
+  for(let i = 0; i < GameProps.ColorPicker.length; i++){
+    const colorPicker = GameProps.ColorPicker[i];
+    colorPicker.draw();
+
+  }
   //Draw all game objects here, remember to think about the draw order (layers in PhotoShop for example!)
-  
   requestAnimationFrame(drawGame);
 }
 
@@ -52,6 +66,18 @@ function loadGame() {
   //Set canvas with and height to match the sprite sheet
   cvs.width = SpriteInfoList.Board.width;
   cvs.height = SpriteInfoList.Board.height;
+  spcvs.updateBoundsRect();
+
+  GameProps.ColorPicker = [
+    new TColourPicker (spcvs, SpriteInfoList.ColorPicker, "Black", 0),
+    new TColourPicker (spcvs, SpriteInfoList.ColorPicker, "Blue", 1),
+    new TColourPicker (spcvs, SpriteInfoList.ColorPicker,"Brown", 2),
+    new TColourPicker (spcvs, SpriteInfoList.ColorPicker, "Green", 3),
+    new TColourPicker (spcvs, SpriteInfoList.ColorPicker, "Orange", 4),
+    new TColourPicker (spcvs, SpriteInfoList.ColorPicker, "Red", 5),
+    new TColourPicker (spcvs, SpriteInfoList.ColorPicker, "White", 6),
+    new TColourPicker (spcvs, SpriteInfoList.ColorPicker, "Yellow", 7),
+  ]
 
   newGame();
   requestAnimationFrame(drawGame); // Start the animation loop
@@ -64,3 +90,4 @@ function loadGame() {
 
 
 spcvs.loadSpriteSheet("./Media/SpriteSheet.png", loadGame);
+window.addEventListener("resize", () => spcvs.updateBoundsRect());

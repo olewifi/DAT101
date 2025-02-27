@@ -1,16 +1,16 @@
 "use strict";
-import lib2D from "./lib2D.mjs";
+import lib2D from "./lib2d.mjs";
 /**
  * @library libSprite
  * @description A library for classes that manage sprite animations.
  */
 
 class TSpriteCanvas {
-  #cvs; //Canvas
-  #ctx; //What we are gonna draw in
-  #img; //The image we are drawing from
+  #cvs;
+  #ctx;
+  #img;
   #boundingRect;
-  
+
   constructor(aCanvas) {
     this.#cvs = aCanvas;
     this.#ctx = aCanvas.getContext("2d");
@@ -28,14 +28,14 @@ class TSpriteCanvas {
     let index = aIndex;
     const sx = aSpriteInfo.x + index * aSpriteInfo.width;
     const sy = aSpriteInfo.y;
-    const sw = aSpriteInfo.width; //sWidth
-    const sh = aSpriteInfo.height; //sHeight
-    const dx = aDx; //posisjon hvor bildet blir tegnet i bredden (x retning)
-    const dy = aDy; //posisjon hvor bildet blir tegnet i høyden (y retning)
-    const dw = sw; //dWidth = størrelse/scaling
-    const dh = sh; //dHeight = størrelse/scaling
-    if (aRot !== 0){
-      //Hvis vi har rotasjon må vi flytte midten av destinasjonen til 0,0
+    const sw = aSpriteInfo.width;
+    const sh = aSpriteInfo.height;
+    const dx = aDx;
+    const dy = aDy;
+    const dw = sw;
+    const dh = sh;
+    if(aRot !== 0){
+      //Hvis vi har rotasjon må vi flytte mitten av destinasjonen til 0,0
       const cx = dx + dw / 2;
       const cy = dy + dh / 2;
       const rad = aRot * Math.PI / 180;
@@ -45,18 +45,18 @@ class TSpriteCanvas {
       this.#ctx.rotate(-rad);
       this.#ctx.translate(-cx, -cy);
     }else{
-    this.#ctx.drawImage(this.#img, sx, sy, sw, sh, dx, dy, dw, dh);
+      this.#ctx.drawImage(this.#img, sx, sy, sw, sh, dx, dy, dw, dh);
     }
-  }// End of drawsprite
+  } // End of drawSprite
 
-  drawText(aText, aPos,) {
+  drawText(aText, aPos){
     this.#ctx.font = "25px Arial";
-    this.#ctx.fillstyle = "#b97610";
+    this.#ctx.fillStyle = "#333333";
     this.#ctx.textAlign = "right";
     this.#ctx.fillText(aText, aPos.x, aPos.y);
   }
 
-  clearCanvas(){
+  clearCanvas() {
     this.#ctx.clearRect(0, 0, this.#cvs.width, this.#cvs.height);
   }
 
@@ -74,9 +74,11 @@ class TSpriteCanvas {
     return this.#cvs.style;
   }
 
-} //End of TSpriteCanvas class
+} // End of TSpriteCanvas class
 
-//Utvid konstruktøren til å ta inn et punkt for destinasjonen til sprite.
+/* 
+ Utvid konstruktøren til å ta inn et punkt for destinasjon til sprite.
+*/
 
 class TSprite {
   #spcvs;
@@ -84,22 +86,21 @@ class TSprite {
   #pos;
   #index;
   #speedIndex;
-
-  constructor (aSpriteCanvas, aSpriteInfo, aPosition){
+  constructor(aSpriteCanvas, aSpriteInfo, aPosition) {
     this.#spcvs = aSpriteCanvas;
     this.#spi = aSpriteInfo;
-    this.#pos = aPosition.clone(); //Kloner posisjonen så den hvor den er
-    this.#index = 0; //indexen til bildene
+    this.#pos = aPosition.clone(); //Vi trenger en kopi av posisjonen
+    this.#index = 0;
     this.animateSpeed = 0;
     this.#speedIndex = 0;
     this.boundingBox = new lib2D.TRectangle(this.#pos.x, this.#pos.y, this.#spi.width, this.#spi.height);
     this.rotation = 0;
-  } 
+  }
 
-  draw (){
-    if(this.animateSpeed > 0){
+  draw() {
+    if (this.animateSpeed > 0) {
       this.#speedIndex += this.animateSpeed / 100;
-      if(this.#speedIndex >= 1){
+      if (this.#speedIndex >= 1) {
         this.#index++;
         this.#speedIndex = 0;
         if (this.#index >= this.#spi.count) {
@@ -109,7 +110,6 @@ class TSprite {
     }
     this.#spcvs.drawSprite(this.#spi, this.#pos.x, this.#pos.y, this.#index, this.rotation);
   }
-  /*Implementer en metode for å forflytte sprite til en ny posisjon.*/
 
   translate(aDx, aDy) {
     this.#pos.x += aDx;
@@ -122,7 +122,7 @@ class TSprite {
     return this.#pos.x;
   }
 
-  get posY(){
+  get posY() {
     return this.#pos.y;
   }
 
@@ -139,7 +139,7 @@ class TSprite {
     this.boundingBox.x = aX;
   }
 
-  set posY (aY) {
+  set posY(aY) {
     this.#pos.y = aY;
     this.boundingBox.y = aY;
   }
@@ -150,7 +150,7 @@ class TSprite {
     this.boundingBox.x = aX;
     this.boundingBox.y = aY;
   }
-  
+
   getPos(){
     return this.#pos;
   }
@@ -158,7 +158,7 @@ class TSprite {
   get index() {
     return this.#index;
   }
-
+  
   set index(aIndex){
     this.#index = aIndex;
   }
@@ -171,7 +171,7 @@ class TSprite {
     return this.boundingBox.center;
   }
 
-}//End of TSprite 
+} //End of TSprite class
 
 export default {
   /**
@@ -180,14 +180,14 @@ export default {
    * @param {HTMLCanvasElement} aCanvas - The canvas element to use.
    * @function loadSpriteSheet - Loads a sprite sheet image.
    * @param {string} aFileName - The file name of the sprite sheet image.
-   * @param {function} aLoadedFinal - A callback function to call when sheet is done loading.
+   * @param {function} aLoadedFinal - A callback function to call when the image is done loading.
    */
   TSpriteCanvas: TSpriteCanvas,
 
   /**
    * @class TSprite
    * @description A class that manage sprite animations.
-   * @param {TSpriteCanvas} aSpriteCanvas - The sprite canvas to use
+   * @param {TSpriteCanvas} aSpriteCanvas - The sprite canvas to use.
    * @param {object} aSpriteInfo - The sprite information.
    * @param {TPosition} aPosition - The position of the sprite.
    * @function draw - Draws the sprite on the canvas.

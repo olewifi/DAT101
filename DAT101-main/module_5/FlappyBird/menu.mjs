@@ -24,7 +24,7 @@ export class TMenu {
   #posPlayScore;
   #ranking = {first: 0, second: 0, third: 0};
   constructor(aSpriteCanvas) {
-    this.#spcvs = aSpriteCanvas;
+    this.#spcvs = aSpriteCanvas; 
     /* 
     Bruk denne koden for jukse litt og starte spillet direkte 
     i en annen status enn EGameStatus.idle

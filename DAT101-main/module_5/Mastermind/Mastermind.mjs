@@ -6,7 +6,8 @@
 import lib2D from "../../common/libs/lib2d_v2.mjs";
 import libSprite from "../../common/libs/libSprite_v2.mjs";
 import { TColourPicker } from "./ColorPicker.mjs";
-import MastermindBoard from "./MastermindBoard.mjs";
+import { MastermindBoard } from "./MastermindBoard.mjs";
+import { TMenu } from "./menu.mjs";
 
 //--------------------------------------------------------------------------------------------------------------------
 //------ Variables, Constants and Objects
@@ -35,7 +36,10 @@ export const GameProps = {
   Board: new libSprite.TSprite(spcvs, SpriteInfoList.Board, new lib2D.TPoint(0,0)),
   ColorPicker: null,
   ComputerAnswers: [],
-
+  roundIndicator: null,
+  menu: null,
+  playerAnswers: [null, null, null, null],
+  answerHintRow: MastermindBoard.ColorHint.Row1,
 };
 
 //--------------------------------------------------------------------------------------------------------------------
@@ -50,12 +54,9 @@ function drawGame(){
   spcvs.clearCanvas();
   //Draw all game objects here, remember to think about the draw order (layers in PhotoShop for example!)
   GameProps.Board.draw();
+
   GameProps.ColorPicker[0].draw();
 
-  for(let i = 0; i < GameProps.ColorPicker.length; i++){
-    const colorPicker = GameProps.ColorPicker[i];
-    colorPicker.draw();
-  }
   for(let i = 0; i < GameProps.ComputerAnswers.length; i++){
     const computerAnswers = GameProps.ComputerAnswers[i];
     computerAnswers.draw();
@@ -63,6 +64,12 @@ function drawGame(){
 
   GameProps.roundIndicator.draw();
 
+  GameProps.menu.draw();
+
+  for(let i = 0; i < GameProps.ColorPicker.length; i++){
+    const colorPicker = GameProps.ColorPicker[i];
+    colorPicker.draw();
+  }
   requestAnimationFrame(drawGame);
 }
 
@@ -82,11 +89,11 @@ function generateComputerAnswer(){
 }
 
 function moveRoundIndicator(){
-  const pos = GameProps.snapTo.positions[0];
-  pos.x -= 84;
-  pos.y += 7;
-  GameProps.roundIndicator.x = pos.x;
-  GameProps.roundIndicator.y = pos.y;
+  const pos = new lib2D.TPoint();
+  pos.x = GameProps.snapTo.positions[0].x
+  pos.y = GameProps.snapTo.positions[0].y
+  GameProps.roundIndicator.x = pos.x -84;
+  GameProps.roundIndicator.y = pos.y +7;
 }
 
 //--------------------------------------------------------------------------------------------------------------------
@@ -100,7 +107,7 @@ function loadGame() {
   cvs.height = SpriteInfoList.Board.height;
   spcvs.updateBoundsRect();
   let pos = new lib2D.TPoint(0, 0);
-  GameProps.board
+  GameProps.Board = new libSprite.TSprite(spcvs, SpriteInfoList.Board, pos);
 
   GameProps.ColorPicker = [
     new TColourPicker (spcvs, SpriteInfoList.ColorPicker, "Black", 0),
@@ -113,11 +120,13 @@ function loadGame() {
     new TColourPicker (spcvs, SpriteInfoList.ColorPicker, "Yellow", 7),
   ]
   
-  pos = GameProps.snapTo.positions[0];
+  pos.x = GameProps.snapTo.positions[0].x;
+  pos.y = GameProps.snapTo.positions[0].y;
   GameProps.roundIndicator = new libSprite.TSprite(spcvs, SpriteInfoList.ColorHint, pos);
   GameProps.roundIndicator.index = 2;
-
   moveRoundIndicator();
+
+  GameProps.menu = new TMenu(spcvs);
 
   newGame();
   requestAnimationFrame(drawGame); // Start the animation loop

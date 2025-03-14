@@ -29,17 +29,17 @@ const spcvs = new libSprite.TSpriteCanvas(cvs);
 
 //Add all you game objects here
 export const GameProps = {
+  board: null,
+  ColorPicker: [],
   snapTo: {
     positions: MastermindBoard.ColorAnswer.Row1, 
     distance: 20,
   },
-  Board: new libSprite.TSprite(spcvs, SpriteInfoList.Board, new lib2D.TPoint(0,0)),
-  ColorPicker: null,
   ComputerAnswers: [],
   roundIndicator: null,
   menu: null,
   playerAnswers: [null, null, null, null],
-  answerHintRow: MastermindBoard.ColorHint.Row1,
+  answerHintRow: MastermindBoard.AnswerHint.Row1,
 };
 
 //--------------------------------------------------------------------------------------------------------------------
@@ -53,9 +53,9 @@ function newGame() {
 function drawGame(){
   spcvs.clearCanvas();
   //Draw all game objects here, remember to think about the draw order (layers in PhotoShop for example!)
-  GameProps.Board.draw();
+  GameProps.board.draw();
 
-  GameProps.ColorPicker[0].draw();
+  GameProps.ColorPicker[0].draw(); //SKAL DENNE VÆRE HER?
 
   for(let i = 0; i < GameProps.ComputerAnswers.length; i++){
     const computerAnswers = GameProps.ComputerAnswers[i];
@@ -88,10 +88,8 @@ function generateComputerAnswer(){
 
 }
 
-function moveRoundIndicator(){
-  const pos = new lib2D.TPoint();
-  pos.x = GameProps.snapTo.positions[0].x
-  pos.y = GameProps.snapTo.positions[0].y
+export function moveRoundIndicator(){
+  const pos = GameProps.snapTo.positions[0];
   GameProps.roundIndicator.x = pos.x -84;
   GameProps.roundIndicator.y = pos.y +7;
 }
@@ -107,7 +105,7 @@ function loadGame() {
   cvs.height = SpriteInfoList.Board.height;
   spcvs.updateBoundsRect();
   let pos = new lib2D.TPoint(0, 0);
-  GameProps.Board = new libSprite.TSprite(spcvs, SpriteInfoList.Board, pos);
+  GameProps.board = new libSprite.TSprite(spcvs, SpriteInfoList.Board, pos);
 
   GameProps.ColorPicker = [
     new TColourPicker (spcvs, SpriteInfoList.ColorPicker, "Black", 0),
@@ -120,8 +118,7 @@ function loadGame() {
     new TColourPicker (spcvs, SpriteInfoList.ColorPicker, "Yellow", 7),
   ]
   
-  pos.x = GameProps.snapTo.positions[0].x;
-  pos.y = GameProps.snapTo.positions[0].y;
+  pos = GameProps.snapTo.positions[0];
   GameProps.roundIndicator = new libSprite.TSprite(spcvs, SpriteInfoList.ColorHint, pos);
   GameProps.roundIndicator.index = 2;
   moveRoundIndicator();

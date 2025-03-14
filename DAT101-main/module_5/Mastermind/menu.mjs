@@ -1,7 +1,7 @@
 "use strict";
 import libSprite from "../../common/libs/libSprite_v2.mjs";
 import lib2D from "../../common/libs/lib2d_v2.mjs";
-import { GameProps, SpriteInfoList } from "./Mastermind.mjs";
+import { GameProps, SpriteInfoList, moveRoundIndicator } from "./Mastermind.mjs";
 import { MastermindBoard } from "./MastermindBoard.mjs";
 
 //Lag en meny klasse "TMenu", ingen arv, skal ha tre knapper og en sprite
@@ -13,9 +13,11 @@ export class TMenu{
     #panelHint;
     #colorHints;
     #spcvs;
+    #roundNumber;
 
     constructor(aSpriteCanvas){
         this.#spcvs = aSpriteCanvas;
+        this.#roundNumber = 1;
         this.#buttonNewGame= 
         new libSprite.TSpriteButton(
             aSpriteCanvas, 
@@ -58,6 +60,7 @@ export class TMenu{
     }
     
     onCheckAnswerClick = () =>{
+
         //Denne sjekker om vi har valgt rett farge
         const answerObject = {color : 0, pos: -1, checkThis: true};
         //Lage liste over computerens svar
@@ -72,6 +75,10 @@ export class TMenu{
         //Lage liste over spillerens svar
         const playerAnswerList = [];
         for(let i = 0; i < 4; i++){
+            //Kontrollere at brukeren har valgt 4 farger
+            if(GameProps.playerAnswers[i] === null){
+                return; //Avslutt funksjonen, brukeren mangler farger
+            }
             const obj = Object.create(answerObject);
             const playerAnswer = GameProps.playerAnswers[i];
             obj.color = playerAnswer.index;
@@ -116,17 +123,41 @@ export class TMenu{
                     if(computerAnswer.checkThis && (playerAnswer.pos !== computerAnswer.pos)){
                         if(playerAnswer.color === computerAnswer.color){
                             console.log(`Rett farge på feil plass - {${playerAnswer.pos + 1}}`);
-                            const pos = GameProps.answerHintRow[answerColorHintIndex++];
-                            const colorHintSPI = SpriteInfoList.ColorHint;
-                            const colorHint = new libSprite.TSprite(this.#spcvs, colorHintSPI, pos);
-                            colorHint.index = 0;
-                            this.#colorHints.push(colorHint);
-                            // Vi må ikke sjekke disse to fargene igjen
+                            answerColorHintIndex = this.#createColorHint(answerColorHintIndex, 0);
+                            //Vi må ikke sjekke disse to fargene igjen
                             computerAnswer.checkThis = playerAnswer.checkThis = false;
                         }
                     }
                 }
             }
         }
-    }
-}
+       
+  
+    }//End of onCheckAnswer click
+    
+    //Privat metode, den bruker interne variabler og kan ikke kalles utenfra
+    #createColorHint(posIndex, colorIndex){
+        const pos = GameProps.answerHintRow[posIndex++];
+        const colorHintSPI = SpriteInfoList.colorHint;
+        const colorHint = new libSprite.TSprite(this.#spcvs, colorHintSPI, pos);
+        colorHint.index = colorIndex;
+        this.#colorHints.push(colorHint);
+        return posIndex; //VI må returne den nye indeksen til posisjonen
+    } //End of #createColorHint
+
+     //Gå videre til neste runde
+     #setNextRound(){
+        this.#roundNumber++;
+        const rowText = `Row${this.#roundNumber}`;
+
+        GameProps.snapTo.positions = MastermindBoard.ColorAnswer[rowText];
+        GameProps.answerHintRow = MastermindBoard.AnswerHint[rowText];
+        moveRoundIndicator();
+        for(let i = 0; i < 4; i++){
+            GameProps.playerAnswers[i] = null;
+        }
+
+    //LAg en metode #setnextround som setter opp neste runde
+     
+    
+}//END of class Tmenu

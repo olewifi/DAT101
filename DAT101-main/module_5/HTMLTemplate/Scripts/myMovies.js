@@ -63,12 +63,12 @@ export class TMyMovies extends TBootstrapComponent {
     }
 
     render(){
-        const template = document.getElementById("my-movies-page-template");
+        const template = document.getElementById("add-edit-movie-template");
         const content = template.content.cloneNode(true);
         this.shadowRoot.appendChild(content);
-        this.#htmlTable = this.shadowRoot.getElementById("table-body");
-        this.#loadMovies();
     }
 }
 
-customElements.define("movies-page", TMyMovies);
+customElements.define("add-edit-movie-page", TMyMovies);
+const bodyContent = document.getElementById("body-content");
+bodyContent.innerHTML = "<add-edit-movie-page></add-edit-movie-page>"

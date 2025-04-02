@@ -200,7 +200,7 @@ export function startGame() {
   GameProps.menu.reset();
   spawnObstacle();
   spawnBait();
-  GameProps.sounds.countDown.stop()
+  GameProps.sounds.countDown.stop();
   GameProps.sounds.gameOver.stop();
   GameProps.sounds.heroIsDead.stop();
   //Play the running sound

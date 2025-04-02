@@ -1,5 +1,5 @@
 "use strict";
-import TBootstrapComponent from "./bootstrapComponents.js";
+import TBootstrapComponent from "./bootstrapComponent.js";
 
 class TMainMenu extends TBootstrapComponent {
   constructor(){

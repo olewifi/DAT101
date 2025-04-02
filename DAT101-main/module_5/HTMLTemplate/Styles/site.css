@@ -1,8 +1,6 @@
-/*Main CSS file for the site (all pages)*/
+/* Main CSS file for the site (all pages) */
+
 @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
-
-/*Header - content always shows at the top*/
-
 
 *{
   margin: 0;
@@ -17,7 +15,7 @@ body{
   flex-direction: column;
   padding-bottom: 30px;
   background: linear-gradient(to bottom, #91afff, #4070f4);
-  overflow: hidden;
+ 
 }
 
 section {
@@ -53,4 +51,6 @@ section {
   background-color: rgb(180, 220, 255);
   position: fixed;
   bottom: 0;
+  
 }
+

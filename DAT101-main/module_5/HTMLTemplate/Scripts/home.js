@@ -1,18 +1,17 @@
 "use strict";
-import TBootstrapComponent from "./bootstrapComponents.js";
+import TBootstrapComponent from "./bootstrapComponent.js";
 
 class THome extends TBootstrapComponent {
-    constructor() {
-        super();
-        this.attachShadow({mode: "open"});
-    }
+  constructor(){
+    super();
+    this.attachShadow({mode: "open"});
+  }
 
-render(){
+  render(){
     const template = document.getElementById("home-page-template");
     const content = template.content.cloneNode(true);
-    template.content.cloneNode(true);
-     this.shadowRoot.appendChild(content);
-    }
+    this.shadowRoot.appendChild(content);
+  }
 }
 
 customElements.define("home-page", THome);

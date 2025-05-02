@@ -1,7 +1,7 @@
 "use strict";
 
 // prettier-ignore
-const MastermindBoard = {
+export const MastermindBoard = {
   ButtonNewGame:        {x: 275, y:  5},
   ButtonCheckAnswer:    {x: 275, y: 53},
   ButtonCheat:          {x:   5, y: 45},

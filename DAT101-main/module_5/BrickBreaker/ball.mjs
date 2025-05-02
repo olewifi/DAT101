@@ -15,7 +15,7 @@ export class TBall extends libSprite.TSprite {
   }
 
   update() {
-    this.#physics.update(GameProps.bounds, GameProps.hero);
+    this.#physics.update(GameProps.bounds, GameProps.hero, GameProps.bricks);
 
     /*if(this.pos.y + this.length >= GameProps.bounds.y){
       console.log("You have hit rock bottom");

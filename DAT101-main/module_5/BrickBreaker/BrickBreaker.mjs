@@ -8,6 +8,9 @@ import libSprite from "../../common/libs/libSprite_v2.mjs";
 import { THero } from "./hero.mjs";
 import { TBall } from "./ball.mjs";
 import { TBrick } from "./bricks.mjs";
+import { TMenu } from "./menu.mjs";
+import libSprite_v2 from "../../common/libs/libSprite_v2.mjs";
+
 
 //--------------------------------------------------------------------------------------------------------------------
 //------ Variables, Constants and Objects
@@ -36,25 +39,44 @@ const cvs = document.getElementById("cvs");
 const spcvs = new libSprite.TSpriteCanvas(cvs);
 let hndUpdateGame = null; //hnd = "handle"
 
+export const EGameStatus = {start: 0, playing: 1, pause: 2, gameOver: 3};
+
 export const GameProps = {
   bounds: new lib2D.TRectangle({x: 26, y: 110}, SpriteInfoList.Background.width - 52, SpriteInfoList.Background.height - 195),
   background: new libSprite.TSprite(spcvs, SpriteInfoList.Background),
   hero: null,
   ball: null,
-  bricks: null,
+  bricks: [],
+  status: EGameStatus.playing,
+  menu: null,
+  spStartButton: null,
+
 }
   
+const brickAmountWidth = GameProps.bounds.width / SpriteInfoList.BrickPurple.width;
 
 //--------------------------------------------------------------------------------------------------------------------
 //------ Functions
 //--------------------------------------------------------------------------------------------------------------------
+
+createBricks();
 
 function newGame() {
   // Create dynamic game properties here:
   
   GameProps.hero = new THero(spcvs);
   GameProps.ball = new TBall(spcvs);
-  //GameProps.BrickPurple = new TObstacle(spcvs);
+  createBricks();
+  
+  let brickWidth = GameProps.bounds.x;
+  /*for (let i = 0; i < Math.floor(brickAmountWidth); i++){
+    //let width = SpriteInfoList.BrickPurple.width;
+    const brick = new TBrick(spcvs, SpriteInfoList.BrickPurple, {x: brickWidth, y: GameProps.bounds.y});
+    GameProps.bricks.push(brick);
+    brickWidth += SpriteInfoList.BrickPurple.width;
+  }*/
+
+  GameProps.menu = new TMenu(spcvs);
   
   if(hndUpdateGame !== null) {
     clearInterval(hndUpdateGame);
@@ -77,18 +99,41 @@ function drawGame() {
   spcvs.clearCanvas();
   GameProps.background.draw(0, 0);
   drawBounds();
-  GameProps.hero.draw();
-  GameProps.ball.draw();
-  requestAnimationFrame(drawGame);
-}
 
-function createBricks() {
-  GameProps.BrickPurple
+  //Brick draw first row
+  /*for (let i = 0; i < Math.floor(brickAmountWidth); i++){
+    GameProps.bricks[i].draw();
+  }*/
+
+  switch(GameProps.status) {
+    case EGameStatus.playing:
+    GameProps.hero.draw();
+    GameProps.ball.draw();
+    break;
+    case EGameStatus.start:
+      GameProps.menu.draw();
+  }
+  drawBricks();
+  
+  requestAnimationFrame(drawGame);
 }
 
 function updateGame() {
   // Update game properties here:
   GameProps.ball.update();
+}
+
+function createBricks(){
+  for (let i = 0; i < 1; i++) { //lager en murstein for å teste først
+    const brick = new TBrick (spcvs);
+    GameProps.bricks.push(brick);
+  }
+}
+
+function drawBricks(){
+  for(let i = 0; i < GameProps.bricks.length; i++){
+    GameProps.bricks[i].draw();
+  }
 }
 
 //--------------------------------------------------------------------------------------------------------------------
@@ -101,7 +146,7 @@ function loadGame() {
   cvs.width = SpriteInfoList.Background.width;
   cvs.height = SpriteInfoList.Background.height;
   spcvs.updateBoundsRect(); // The size of the canvas has changed, update the bounds rect.
-
+  /*GameProps.spStartButton.onClick = newGame;*/
   newGame();
   requestAnimationFrame(drawGame); // Start the animation loop
 }

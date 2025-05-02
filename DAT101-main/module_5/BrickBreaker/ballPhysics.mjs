@@ -68,6 +68,45 @@ class TBallPhysics {
     return false;
   }
 
+  #collidedWithBrick(aBrick){
+    //Tester om ballen er helt til venstre for mursteinen
+    if(this.#sprite.right < aBrick.left) return false; //Kan ikke treffe!
+    //Tester om ballen er helt til høyre for mursteinen
+    if(this.#sprite.left > aBrick.right) return false; //kan ikke treffe!
+    //Tester om ballen er helt under mursteinen
+    if(this.#sprite.top > aBrick.bottom) return false; //Kan ikke treffe!
+    //Tester om ballen er helt over mursteinen
+    if(this.#sprite.bottom < aBrick.top) return false;
+
+    //Hvor har ballen truffet mursteinen?
+    //Har ballen truffet bunnen av mursteinen
+    if(this.#sprite.top < aBrick.bottom){
+      this.#sprite.y = aBrick.bottom;
+      this.#directionVector.y *= -1;
+    }else if(this.#sprite.bottom > aBrick.top){
+      //Ballen har truffet toppen av mursteinen
+      this.#sprite.y = aBrick.top - this.#sprite.height;
+      this.#directionVector.y *= -1;
+      }
+      this.#speedVector.calculateMovement(this.#directionVector, this.#speed);
+      return true; //ballen treffer mursteinen
+    }
+  
+    return true; //ballen treffer mursteinen
+  }
+
+  #collidedWithBricks(aBricks){
+    for(let i =  0; i < aBricks.length; i++){
+      const brick = aBricks[i];
+      let hasCollided = this.#collidedWithBrick(brick);
+        if(hasCollided) {
+          console.log("ballen traff mursteinen!");
+          return i; //Returnerer indeksen til mursteinen som ble truffet
+        }
+    }
+    return -1; //Ingen kollisjon med mursteinene
+  }
+
 
   update(aBounds, aHero, aBricks) {
     this.#sprite.x += this.#speedVector.x;
